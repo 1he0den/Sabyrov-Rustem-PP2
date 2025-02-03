@@ -112,16 +112,21 @@ account.deposit(-100)
 
 
 ## 6
-def is_prime(n):
-    if n < 2:
-        return False
-    for i in range(2, int(n ** 0.5) + 1):
-        if n % i == 0:
+class PrimeFilter:
+    def __init__(self, numbers):
+        self.numbers = numbers
+
+    def is_prime(self, n):
+        if n < 2:
             return False
-    return True
+        for i in range(2, int(n ** 0.5) + 1):
+            if n % i == 0:
+                return False
+        return True
 
-numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 19, 20]
+    def filter_primes(self):
+        return list(filter(lambda x: self.is_prime(x), self.numbers))
 
-prime_numbers = list(filter(lambda x: is_prime(x), numbers))
-
-print("Простые числа в списке:", prime_numbers)
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 17, 19]
+prime_filter = PrimeFilter(numbers)
+print(prime_filter.filter_primes())
