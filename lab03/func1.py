@@ -51,7 +51,14 @@ PrimeNums()
 
 # 5th exercise
 
-# не понял пока
+import itertools
+def permutation_printer(word):
+    word_permts=itertools.permutations(word)
+    for i in word_permts:
+        print(''.join(i))
+
+word=input("Please enter a word:")
+permutation_printer(word)
 
 
 # 6th exercise
