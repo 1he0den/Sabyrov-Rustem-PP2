@@ -35,13 +35,14 @@ def search_by_pattern():
 
 def insert_or_update_user():
     name=input("Введите имя: ")
-    phone=input("Ведите фамилию: ")
+    phone=input("Введите номер: ")
+    surname=input("Введите фамилию: ")
     cur.execute("SELECT * FROM phonebook WHERE name=%s", (name,))
     if cur.fetchall():
         cur.execute("UPDATE phonebook SET phone=%s WHERE name=%s", (phone, name))
         print("Номер обновлен.")
     else:
-        cur.execute("INSERT INTO phonebook (name, surname, phone) VALUES (%s, '', %s)", (name, phone))
+        cur.execute("INSERT INTO phonebook (name, surname, phone) VALUES (%s, %s, %s)", (name, surname, phone))
         print("Пользователь введен.")
     conn.commit()
 
@@ -50,15 +51,16 @@ def bulk_insert_users():
     invalid=[]
     for _ in range(n):
         name=input("Введите имя: ")
-        phone=input("Введите фамилию: ")
+        phone=input("Введите номер: ")
+        surname = input("Введите фамилия: ")
         if not phone.isdigit():
-            invalid.append((name, phone))
+            invalid.append((name, surname, phone))
             continue
         cur.execute("SELECT * FROM phonebook WHERE name=%s", (name,))
         if cur.fetchall():
             cur.execute("UPDATE phonebook SET phone=%s WHERE name=%s", (phone, name))
         else:
-            cur.execute("INSErT INTO phonebook (name, surname, phone) VALUES(%s, '', %s)", (name, phone))
+            cur.execute("INSErT INTO phonebook (name, surname, phone) VALUES(%s, %s, %s)", (name, surname, phone))
     conn.commit()
     if invalid:
         print("Недействительные номера телефонов:")
@@ -66,8 +68,8 @@ def bulk_insert_users():
             print(entry)
     
 def paginate_query():
-    limit=int(input("Enter limit: "))
-    offset=int(input("Enter offset: "))
+    limit=int(input("Введите лимит: "))
+    offset=int(input("Введите пропуск: "))
     cur.execute("SELECT * FROM phonebook ORDER BY user_id LIMIT %s OFFSET %s", (limit, offset))
     results=cur.fetchall()
     print(tabulate(results, headers=["ID", "Имя", "Фамилия", "Номер телефона"], tablefmt='fancy_grid'))
