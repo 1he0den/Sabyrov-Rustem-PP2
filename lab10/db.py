@@ -12,7 +12,6 @@ conn = pcc.connect(
 
 cur = conn.cursor()
 
-#do smth with database
 first_start = True
 
 
@@ -80,11 +79,10 @@ while True:
             csv_file_path = input("\nВведите путь до вашего csv file: ")
             with open(csv_file_path, 'r') as csv_file:
                 csv_reader = csv.reader(csv_file)
-                next(csv_reader)  # Skip the header row (if it has one)
+                next(csv_reader)  
 
                 for row in csv_reader:
                     try:
-                        # Assuming CSV format is [id, username, user_phone]
                         cur.execute("""
                             INSERT INTO users (id, username, user_phone)
                             VALUES (%s, %s, %s);
@@ -93,7 +91,6 @@ while True:
                     except Exception as e:
                         print(f"Error inserting row {row}: {e}")
 
-            # Commit the changes
             conn.commit()
             print("\nУспешно! данные были добавлены в книгу.\n")
 
